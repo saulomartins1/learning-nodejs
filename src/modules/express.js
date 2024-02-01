@@ -11,12 +11,26 @@ app.get("/users", async (req, res) => {
     try {
         const users = await UserModel.find({})
 
-        res.status(200).json(users);
+        res.status(200).json(users)
     } catch (error) {
         res.status(500).send(error.message)
 
     }
 })
+
+app.get("/users/:id", async (req, res) => {
+    try {
+        const id = req.params.id
+        const user = await UserModel.findById(id)
+
+        res.status(200).send(user)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+})
+
+
+
 
 app.post("/users", async (req, res) => {
     try {
