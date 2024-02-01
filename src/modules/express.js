@@ -6,7 +6,7 @@ const port = 8080;
 const app = express()
 app.use(express.json())
 
-// GET methods ==========
+// GET method ==========
 app.get("/users", async (req, res) => {
     try {
         const users = await UserModel.find({})
@@ -51,6 +51,22 @@ app.patch("/users/:id", async (req, res) => {
     try {
         const id = req.params.id
         const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+
+})
+//==========//
+
+
+
+
+//DELETE method ==========
+app.delete("/users/:id", async (req, res) => {
+    try {
+        const id = req.params.id
+        const user = await UserModel.findByIdAndDelete(id, req.body)
         res.status(200).json(user)
     } catch (error) {
         res.status(500).send(error.message)
