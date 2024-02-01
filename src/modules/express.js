@@ -1,32 +1,31 @@
 const express = require('express')
 const UserModel = require("../models/user.model")
 
-const app = express()
 const port = 8080;
 
-app.get("/users", (req, res) => {
+const app = express()
+app.use(express.json())
 
-    const users = [
-        {
-            name: "User 1",
-            email: "user1@email.com",
-        },
-        {
-            name: "User 2",
-            email: "user2@email.com",
-        },
-    ]
 
-    res
-        .status(200)
-        .json(users);
+app.get("/users", async (req, res) => {
+    try {
+        const users = await UserModel.find({})
 
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).send(error.message)
+
+    }
 })
 
-app.post("/users", (req, res) => {
-    const user = UserModel.create(req.body);
+app.post("/users", async (req, res) => {
+    try {
+        const user = await UserModel.create(req.body);
+        res.status(201).json(user)
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
 
-    res.status(201).json(user)
 })
 
 
