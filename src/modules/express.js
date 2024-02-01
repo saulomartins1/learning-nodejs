@@ -6,6 +6,19 @@ const port = 8080;
 const app = express()
 app.use(express.json())
 
+// Middleware
+app.use((req, res, next) => {
+
+    //Run before request be executed
+    console.log(`Request type: ${req.method}`)
+    console.log(`Content type: ${req.headers["content-type"]}`)
+
+
+    //Execute request
+    next();
+})
+
+
 // GET method ==========
 app.get("/users", async (req, res) => {
     try {
