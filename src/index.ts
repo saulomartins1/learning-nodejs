@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import { GetUsersController } from "./controllers/get-users/get-users";
+import { MongoGetUsersRepository } from "./repositories/get-users/mongo-get-users";
 
 dotenv.config();
 
@@ -11,6 +13,11 @@ app.listen(port, () => {
   console.log(`Running on port ${port}`);
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
+app.get("/users", async (req, res) => {
+  const mongoGetUsersRepository = new MongoGetUsersRepository();
+  const getUsersControllers = new GetUsersController(mongoGetUsersRepository);
+
+  const { body, statusCode } = await getUsersControllers.handle();
+
+  res.send(body).status(statusCode);
 });
